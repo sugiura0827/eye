@@ -12,6 +12,7 @@
             height: 100vh;
             margin: 0;
             background-color: #f0f0f0;
+            overflow: hidden;
         }
         .eye-container {
             position: relative;
@@ -47,20 +48,31 @@
             <div class="pupil" id="rightPupil"></div>
         </div>
     </div>
+    
+    <audio id="soundEffect" src="path/to/sound.mp3" preload="auto"></audio>
 
     <script>
+        const soundEffect = document.getElementById('soundEffect');
+        
+        function playSound() {
+            soundEffect.currentTime = 0;
+            soundEffect.play();
+        }
+
         function updateEyes(event) {
             const maxOffset = 20;
             const gamma = event.gamma; // Left-to-right tilt in degrees, from -90 to 90
             const beta = event.beta; // Front-to-back tilt in degrees, from -180 to 180
 
-            const xOffset = (gamma / 45) * maxOffset;
-            const yOffset = (beta / 90) * maxOffset;
+            const xOffset = (beta / 45) * maxOffset;  // Adjusted for landscape mode
+            const yOffset = -(gamma / 90) * maxOffset; // Adjusted for landscape mode
 
             const pupils = document.querySelectorAll('.pupil');
             pupils.forEach(pupil => {
                 pupil.style.transform = `translate(${xOffset}px, ${yOffset}px)`;
             });
+
+            playSound(); // Play sound effect on each update
         }
 
         function requestPermission() {
