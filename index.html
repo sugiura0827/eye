@@ -59,9 +59,9 @@
             soundEffect.play();
         }
 
-        let lastXOffset = 0;
-        let lastYOffset = 0;
-        const threshold = 10; // Define the threshold for significant movement
+        let lastGamma = 0;
+        let lastBeta = 0;
+        const angleThreshold = 5; // Angle threshold in degrees
 
         function updateEyes(event) {
             const maxOffset = 20;
@@ -76,18 +76,18 @@
                 pupil.style.transform = `translate(${xOffset}px, ${yOffset}px)`;
             });
 
-            // Calculate the change in position
-            const deltaX = Math.abs(xOffset - lastXOffset);
-            const deltaY = Math.abs(yOffset - lastYOffset);
+            // Calculate the change in angle
+            const deltaGamma = Math.abs(gamma - lastGamma);
+            const deltaBeta = Math.abs(beta - lastBeta);
 
-            // Play sound if the movement is significant
-            if (deltaX > threshold || deltaY > threshold) {
+            // Play sound if the angular movement is significant
+            if (deltaGamma > angleThreshold || deltaBeta > angleThreshold) {
                 playSound();
             }
 
-            // Update the last offsets
-            lastXOffset = xOffset;
-            lastYOffset = yOffset;
+            // Update the last angles
+            lastGamma = gamma;
+            lastBeta = beta;
         }
 
         function requestPermission() {
